@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import MainContainer from '../containers/MainContainer';
 import * as actionCreators from '../actions/actions';
 import { bindActionCreators } from 'redux';
-import {StyleSheet,Dimensions} from 'react-native';
 
 import {
   Navigator,
@@ -13,16 +12,31 @@ import {
   ToastAndroid,
 } from 'react-native';
 
-let heightDimensions = Dimensions.get("window").height;
-let widthDimensions = Dimensions.get("window").width;
+let _navigator;
+let lastBackPressed =null;
 
 class App extends Component {
     constructor(props){
       super(props);
+      BackAndroid.addEventListener('hardwareBackPress', this.goBack);
+    }
+    goBack() {
+      if(_navigator && _navigator.getCurrentRoutes().length > 1){
+          _navigator.pop();
+          return false;
+      }
 
+      if (lastBackPressed && ((lastBackPressed + 3000) >= Date.now())) {
+              return false;
+        }
+      lastBackPressed = Date.now();
+      ToastAndroid.show('再按一次退出应用', ToastAndroid.SHORT);
+
+      return true;
     }
 
     renderScene(route, navigator) {
+    _navigator = navigator;
       const Component = route.component;
 
       return (
@@ -30,22 +44,16 @@ class App extends Component {
       );
     }
 
+
    render() {
       return (
-        <View style={{ width:widthDimensions,height:100}}>
+        <View style={{ flex: 1 }}>
           <StatusBar
             backgroundColor="#3e9ce9"
             barStyle="light-content"
           />
 
-          <View
-            style={{backgroundColor: 'powderblue',  flex:1}}
-
-          >
-          </View>
-
           <Navigator
-            style={{ flex: 1 }}
             configureScene={this.configureScene}
             renderScene={this.renderScene}
             initialRoute={{
@@ -59,21 +67,6 @@ class App extends Component {
 
  }
 
-var lastBackPressed =null;
-BackAndroid.addEventListener("hardwareBackPress",()=>{
-  if(_navigator && _navigator.getCurrentRoutes().length > 1){
-      _navigator.pop();
-      return false;
-  }
-
-  if (lastBackPressed && ((lastBackPressed + 3000) >= Date.now())) {
-          return false;
-    }
-    lastBackPressed = Date.now();
-    ToastAndroid.show('再按一次退出应用', ToastAndroid.SHORT);
-
-  return true;
-});
 
 
 export default App;
