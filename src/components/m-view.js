@@ -1,7 +1,6 @@
 import React, {
   Component
-} from 'react';
-import * as actionsCreators from '../actions/actions';
+} from 'react'; 
 
 import {
   Text,

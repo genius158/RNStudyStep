@@ -53,11 +53,21 @@ class ViewPager extends Component{
            onPageScrollStateChanged={this.onPageScrollStateChanged}
            onPageSelected={this.onPageSelected}
           >
-          <MView
-            {...this.props} />
-          <View/>
-          <View/>
-          <View/>
+            <View>
+            <MView
+            actions={this.props.actions}
+            str ={this.props.maindata.str}
+            />
+            </View>
+
+          <View
+            style={{flex:1, backgroundColor: '#3e8ce9'}}
+          >
+
+          </View>
+          <View  style={{flex:1, backgroundColor: '#3e7c69'}}
+          >
+          </View>
           </ViewPagerAndroid>
         );
     }
