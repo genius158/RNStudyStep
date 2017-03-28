@@ -1,6 +1,8 @@
 import React, {
   Component
 } from 'react';
+import * as actionsCreators from '../actions/actions';
+
 import {
   Text,
   View,
@@ -34,8 +36,9 @@ export default class MView extends Component {
     );
   }
 
-  handleSetStr=()=>{
-    this.props.handleSetStr();
-  }
+
+    handleSetStr=()=>{
+      this.props.actions.actionSetStr('sdfasdfasdfasdfafsdfsd');
+    }
 
 }

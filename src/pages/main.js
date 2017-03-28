@@ -6,7 +6,8 @@ import { bindActionCreators } from 'redux';
 import {StyleSheet,Dimensions} from 'react-native';
 
 import {
-  View
+  View,
+  ViewPagerAndroid,
 } from 'react-native';
 
 
@@ -21,8 +22,8 @@ class Main extends Component {
 
   }
   render() {
-    const { maindata } = this.props;
-    alert(maindata);
+    let {str}=this.props;
+
     return (
       <View style={{ flex: 1 }}>
         <View
@@ -30,18 +31,48 @@ class Main extends Component {
           >
         </View>
 
-      <MView
-        style={{ flex: 1 }}
-        str={maindata.str}
-        handleSetStr={this.handleSetStr}
-      />
+      <ViewPager {...this.props}/>
       </View>
     )
   }
 
-  handleSetStr=()=>{
-    this.props.actions.actionSetStr('sdfasdfasdfasdfafsdfsd');
-  }
 }
 
+
+class ViewPager extends Component{
+  constructor(props){
+    super(props);
+  }
+    render(){
+
+        return(
+          <ViewPagerAndroid
+           ref='ViewPager'
+           style={{flex:1}}
+           onPageScroll={this.onPageScroll}
+           onPageScrollStateChanged={this.onPageScrollStateChanged}
+           onPageSelected={this.onPageSelected}
+          >
+          <MView
+            {...this.props} />
+          <View/>
+          <View/>
+          <View/>
+          </ViewPagerAndroid>
+        );
+    }
+
+    onPageSelected =(e) =>{
+      this.setState({page: e.nativeEvent.position});
+    }
+
+    onPageScroll = (e) => {
+      this.setState({progress: e.nativeEvent});
+    }
+
+    onPageScrollStateChanged=(state : ViewPagerScrollState)=> {
+      this.setState({scrollState: state});
+    }
+
+}
 export default Main;

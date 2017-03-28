@@ -20,7 +20,7 @@ class App extends Component {
       super(props);
       BackAndroid.addEventListener('hardwareBackPress', this.goBack);
     }
-    goBack() {
+    goBack=()=> {
       if(_navigator && _navigator.getCurrentRoutes().length > 1){
           _navigator.pop();
           return false;
@@ -35,7 +35,7 @@ class App extends Component {
       return true;
     }
 
-    renderScene(route, navigator) {
+    renderScene=(route, navigator)=> {
     _navigator = navigator;
       const Component = route.component;
 
