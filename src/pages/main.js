@@ -50,6 +50,7 @@ class Main extends Component {
           currentIndex={this.state.currentIndex}
         />
         <ViewPager
+          ref="viewpager"
           tabChange={this.tabChange}
          {...this.props}/>
       </View>
@@ -57,7 +58,8 @@ class Main extends Component {
   }
 
   onTabClick=(pos)=>{
-     this.refs.ViewPager.setPage(pos);
+    this.refs.viewpager.setViewPagerPage(pos);
+    this.tabChange(pos);
   }
 
   tabChange=(index)=>{
@@ -93,18 +95,23 @@ class Main extends Component {
 
 }
 
-
+setPage=(pos)=>{
+}
 
 
 class ViewPager extends Component{
   constructor(props){
     super(props);
   }
-    render(){
 
+setViewPagerPage=(pos)=>{
+  this.viewPager.setPage(pos);
+};
+
+  render(){
         return(
           <ViewPagerAndroid
-           ref='ViewPager'
+          ref={(viewPager) =>  this.viewPager = viewPager }
            style={{flex:1}}
            onPageScroll={this.onPageScroll}
            onPageScrollStateChanged={this.onPageScrollStateChanged}
