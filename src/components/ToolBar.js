@@ -20,15 +20,9 @@ export default class ToolBar extends Component{
   }
   render() {
     return (
-      <View style= {styles.container}
-          >
-            <Text
-              style={
-                { fontSize: 20
-                  ,color:'#ffffff'
-                }}
-            >
-            {this.props.title}
+      <View style = {styles.container} >
+            <Text style={styles.testStyle} >
+              {this.props.title}
             </Text>
         </View>
     )
@@ -41,6 +35,9 @@ const styles = StyleSheet.create({
              ,flexDirection:'row'
              ,justifyContent:'center'
              ,alignItems:'center'
+  },
+  testStyle: {fontSize: 20
+             ,color:'#ffffff'
   },
 
 });

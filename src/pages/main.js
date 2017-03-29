@@ -6,6 +6,7 @@ import {StyleSheet,Dimensions} from 'react-native';
 
 import MView from '../components/m-view';
 import ToolBar from '../components/ToolBar';
+import TabLayout from '../components/TabLayout';
 
 import {
   View,
@@ -19,10 +20,18 @@ let widthDimensions = Dimensions.get("window").width;
 
 let strOut;
 
+const titles=[
+  "one"
+  ,"two"
+  ,"three"
+]
+
 class Main extends Component {
   constructor(props){
     super(props);
-
+    this.state = {
+              currentIndex:0,
+            };
   }
 
 
@@ -35,9 +44,19 @@ class Main extends Component {
           ,flexDirection:'column'
         }}>
         <ToolBar title='sdutystep'/>
-        <ViewPager {...this.props}/>
+        <TabLayout
+          titles={titles}
+          currentIndex={this.state.currentIndex}
+        />
+        <ViewPager
+          tabChange={this.tabChange}
+         {...this.props}/>
       </View>
     )
+  }
+
+  tabChange=(index)=>{
+    this.setState({currentIndex:index});
   }
 
     // {this.renderToolBar()}
@@ -108,6 +127,7 @@ class ViewPager extends Component{
 
     onPageSelected =(e) =>{
       this.setState({page: e.nativeEvent.position});
+      this.props.tabChange(e.nativeEvent.position);
     }
 
     onPageScroll = (e) => {
