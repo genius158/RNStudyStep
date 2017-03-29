@@ -45,6 +45,7 @@ class Main extends Component {
         }}>
         <ToolBar title='sdutystep'/>
         <TabLayout
+          clickOnBack={this.onTabClick}
           titles={titles}
           currentIndex={this.state.currentIndex}
         />
@@ -53,6 +54,10 @@ class Main extends Component {
          {...this.props}/>
       </View>
     )
+  }
+
+  onTabClick=(pos)=>{
+     this.refs.ViewPager.setPage(pos);
   }
 
   tabChange=(index)=>{
