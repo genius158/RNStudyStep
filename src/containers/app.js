@@ -13,26 +13,35 @@ import {
 } from 'react-native';
 
 let _navigator;
-let lastBackPressed =null;
+let lastBackPressed=0 ;
 
 class App extends Component {
     constructor(props){
       super(props);
-      BackAndroid.addEventListener('hardwareBackPress', this.goBack);
     }
+
+    componentWillMount(){
+             BackAndroid.addEventListener('hardwareBackPress',  this.goBack);
+    }
+
+    componentWillUnmount() {
+             BackAndroid.removeEventListener('hardwareBackPress',  this.goBack);
+    }
+
     goBack=()=> {
       if(_navigator && _navigator.getCurrentRoutes().length > 1){
           _navigator.pop();
-          return false;
+          return true;
       }
 
-      if (lastBackPressed && ((lastBackPressed + 3000) >= Date.now())) {
-              return false;
+      if (new Date().valueOf() - lastBackPressed>= 1000 ) {
+        lastBackPressed = new Date().valueOf();
+        ToastAndroid.show('再按一次退出应用', ToastAndroid.SHORT);
+              return true;
         }
-      lastBackPressed = Date.now();
-      ToastAndroid.show('再按一次退出应用', ToastAndroid.SHORT);
 
-      return true;
+
+      return false;
     }
 
     renderScene=(route, navigator)=> {

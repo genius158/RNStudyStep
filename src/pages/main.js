@@ -1,12 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import MView from '../components/m-view';
 import * as actionCreators from '../actions/actions';
 import { bindActionCreators } from 'redux';
 import {StyleSheet,Dimensions} from 'react-native';
 
+import MView from '../components/m-view';
+import ToolBar from '../components/ToolBar';
+
 import {
   View,
+  Text,
   ViewPagerAndroid,
 } from 'react-native';
 
@@ -21,22 +24,52 @@ class Main extends Component {
     super(props);
 
   }
+
+
   render() {
     let {str}=this.props;
 
     return (
-      <View style={{ flex: 1 }}>
-        <View
-          style={{ width:widthDimensions,height:40 , backgroundColor: '#3e9ce9'}}
-          >
-        </View>
-
-      <ViewPager {...this.props}/>
+      <View style={
+        { flex: 1
+          ,flexDirection:'column'
+        }}>
+        <ToolBar title='sdutystep'/>
+        <ViewPager {...this.props}/>
       </View>
     )
   }
 
+    // {this.renderToolBar()}
+
+    // renderToolBar() {
+    //   return(
+    //   <View
+    //       style={
+    //         { width:widthDimensions
+    //           ,height:40
+    //           ,backgroundColor: '#3e9ce9'
+    //           ,flexDirection:'column'
+    //           ,justifyContent:'center'
+    //           ,alignItems:'center'
+    //
+    //       }}
+    //       >
+    //         <Text
+    //           style={
+    //             { fontSize: 20
+    //               ,color:'#ffffff'
+    //             }}
+    //         >
+    //           studystep
+    //         </Text>
+    //     </View>
+    //   );
+    //   }
+
 }
+
+
 
 
 class ViewPager extends Component{
@@ -65,7 +98,8 @@ class ViewPager extends Component{
           >
 
           </View>
-          <View  style={{flex:1, backgroundColor: '#3e7c69'}}
+          <View
+            style={{flex:1, backgroundColor: '#3e7c69'}}
           >
           </View>
           </ViewPagerAndroid>
