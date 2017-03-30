@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import {StyleSheet} from 'react-native';
+import RCTDeviceEventEmitter from 'RCTDeviceEventEmitter';
 
 import {
   View,
@@ -21,28 +22,23 @@ export default class TabLayout extends Component{
 
   constructor(props){
     super(props);
+    this.state = {
+              currentIndex:this.props.currentIndex,
+            };
   }
+
+  componentDidMount(){
+        this.listener = RCTDeviceEventEmitter.addListener('changeTab',(value)=>{
+            this.setState({currentIndex:value});
+        });
+    }
+    componentWillUnmount(){
+        this.listener.remove();
+    }
 
   clickHandler =(pos, event) =>{
-      
-    this.props.clickOnBack(pos);
+    RCTDeviceEventEmitter.emit('changeTab',pos);
   }
-
-  // <TouchableHighlight
-  //        style={{marginTop:20}}
-  //        //按下后背景透明度变化
-  //        activeOpacity={0.7}
-  //        //按下后背景颜色
-  //        underlayColor={'red'}
-  //        onPress={() => ToastAndroid.show('文本被点击了', ToastAndroid.SHORT)}>
-  //        <Text
-  //            style={{fontSize:23, color:'blue', backgroundColor:'white'}}
-  //            >
-  //            这是一个文本(测试TouchableHighlight)
-  //        </Text>
-  //      </TouchableHighlight>
-
-
 
   render() {
     let self=this;
@@ -50,7 +46,7 @@ export default class TabLayout extends Component{
     var tabs = [];
        for (var i = 0; i <titles.length; i++) {
         let tempStyle;
-        if (this.props.currentIndex==i) {
+        if (this.state.currentIndex==i) {
           tempStyle = styles.itemSelect;
         }else {
           tempStyle = styles.itemUnselect;

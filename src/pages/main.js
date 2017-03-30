@@ -8,6 +8,8 @@ import MView from '../components/m-view';
 import ToolBar from '../components/ToolBar';
 import TabLayout from '../components/TabLayout';
 
+import RCTDeviceEventEmitter from 'RCTDeviceEventEmitter';
+
 import {
   View,
   Text,
@@ -49,53 +51,10 @@ class Main extends Component {
           titles={titles}
           currentIndex={this.state.currentIndex}
         />
-        <ViewPager
-          ref="viewpager"
-          tabChange={this.tabChange}
-         {...this.props}/>
+        <ViewPager {...this.props}/>
       </View>
     )
   }
-
-  onTabClick=(pos)=>{
-    this.refs.viewpager.setViewPagerPage(pos);
-    this.tabChange(pos);
-  }
-
-  tabChange=(index)=>{
-    this.setState({currentIndex:index});
-  }
-
-    // {this.renderToolBar()}
-
-    // renderToolBar() {
-    //   return(
-    //   <View
-    //       style={
-    //         { width:widthDimensions
-    //           ,height:40
-    //           ,backgroundColor: '#3e9ce9'
-    //           ,flexDirection:'column'
-    //           ,justifyContent:'center'
-    //           ,alignItems:'center'
-    //
-    //       }}
-    //       >
-    //         <Text
-    //           style={
-    //             { fontSize: 20
-    //               ,color:'#ffffff'
-    //             }}
-    //         >
-    //           studystep
-    //         </Text>
-    //     </View>
-    //   );
-    //   }
-
-}
-
-setPage=(pos)=>{
 }
 
 
@@ -103,15 +62,19 @@ class ViewPager extends Component{
   constructor(props){
     super(props);
   }
-
-setViewPagerPage=(pos)=>{
-  this.viewPager.setPage(pos);
-};
+  componentDidMount(){
+          this.listener = RCTDeviceEventEmitter.addListener('changeTab',(value)=>{
+          this.viewPager.setPage(value);
+        });
+    }
+    componentWillUnmount(){
+        this.listener.remove();
+    }
 
   render(){
         return(
           <ViewPagerAndroid
-          ref={(viewPager) =>  this.viewPager = viewPager }
+           ref={(viewPager) =>  this.viewPager = viewPager }
            style={{flex:1}}
            onPageScroll={this.onPageScroll}
            onPageScrollStateChanged={this.onPageScrollStateChanged}
@@ -139,7 +102,7 @@ setViewPagerPage=(pos)=>{
 
     onPageSelected =(e) =>{
       this.setState({page: e.nativeEvent.position});
-      this.props.tabChange(e.nativeEvent.position);
+      RCTDeviceEventEmitter.emit("changeTab",e.nativeEvent.position);
     }
 
     onPageScroll = (e) => {
